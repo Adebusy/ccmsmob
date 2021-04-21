@@ -8,7 +8,7 @@ import AppFormPicker from "../components/forms/AppFormPicker";
 import Screen from "../components/Screen";
 import AppText from "../components/AppText";
 import users from "../api/users";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import complaintAPI from "../api/complaint";
 
 const validationSchema = Yup.object().shape({
@@ -34,6 +34,23 @@ const titleObj = [
 function SignUpScreen() {
   const [uploadVisible, setUploadVisible] = useState(false);
   const [progress, setProgress] = useState(0);
+  // const [titleObj, settitleObj] = useState([]);
+
+  // useEffect(() => {
+  //   loadTitle();
+  // });
+
+  // const loadTitle = async () => {
+  //   console.log("got here ");
+  //   const retTitle = await complaintAPI.getTitles();
+  //   if (retTitle.ok) {
+  //     console.log("got ok ");
+  //     console.log(retTitle.data);
+  //     settitleObj(retTitle.data);
+  //   } else {
+  //     console.log("erer" + retTitle.problem);
+  //   }
+  // };
 
   const handleSubmit = async (newUser) => {
     setProgress(0);
