@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { StyleSheet, View, FlatList } from "react-native";
 import ListItems from "../components/ListItems";
 import ListItemSeparator from "../components/ListItemSeparator";
@@ -9,6 +9,9 @@ import Icon from "../components/Icon";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { useContext } from "react/cjs/react.production.min";
 import AuthContext from "../auth/context";
+import  storage from "../auth/storage";
+
+
 const retObject = [
   {
     title: "Complains",
@@ -30,6 +33,13 @@ const retObject = [
 
 function AccountScreen({ navigation }) {
   const { user, setUser } = useContext(AuthContext);
+ 
+  const handleLogOut =() =>{
+    () =>setUser(null);
+    storage.removeToken();
+  }
+
+
   return (
     <Screen style={styles.screen}>
       <View style={styles.container}>
@@ -62,7 +72,7 @@ function AccountScreen({ navigation }) {
       <ListItems
         title={"Log Out"}
         IconName={"logout"}
-        ImageComponent={<Icon name={"logout"} backgroundColor={"#ffe66d"} onPress={() =>setUser(null)} />}
+        ImageComponent={<Icon name={"logout"} backgroundColor={"#ffe66d"} onPress={() =>setUser(null)} onPress ={handleLogOut} />}
       ></ListItems>
     </Screen>
   );

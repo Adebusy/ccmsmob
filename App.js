@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, Button } from "react-native";
 import Homescreen from "./screens/Homescreen";
 import Screen from "./components/Screen";
@@ -12,7 +12,8 @@ import AppNavigator from "./navigation/AppNavigator";
 import NavigationTheme from "./navigation/navigationTheme";
 import OfflineNotice from "./components/OfflineNotice";
 import AuthContext from "./auth/context";
-import { useState } from "react/cjs/react.development";
+import authStorage from "./auth/storage";
+import {AppLoading} from "expo";// to handle the splash screen on app load
 
 const Stack = createStackNavigator();
 const StackNavigator = () => (
@@ -85,6 +86,23 @@ const TabNavigator = () => (
 
 function App() {
   const[user, setUser]  = useState();
+  const {isReady, setIsReady} = useState(false); //creating a boolean to hold availability of the app  
+
+const restoreToken  = async =>{
+  const userObj =await authStorage.getToken();
+  if (!userObj) return;
+  setUser(userObj);
+}
+
+//we no longer need the effect hook on app load because 
+//this was commented because a page(splash screen) usually loads before loading our application from the simulator
+//useEffect(() =>{ restoreToken()}, [])
+
+//on loading the splash screen we set startAsyn to the function to be called when the app starts
+//this get called when the startAsyn finishs loading so we set it to true
+//so in the next render, isReady will be true so instead of the splash screen we are going to set the render of our app.
+if(!isReady) return <AppLoading startAsyn={restoreToken} onFinish ={() => setIsReady(true)} />
+
   return (
     <AuthContext.Provider value={{user, setUser}}>
     <OfflineNotice/>
