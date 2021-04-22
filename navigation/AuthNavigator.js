@@ -5,14 +5,27 @@ import LoginNavigator from "./LoginNavigator";
 import SignUpNavigator from "./SignUpNavigator";
 import AccountNavigator from "../navigation/AccountNavigator";
 import AppNavigator from "../navigation/AppNavigator";
+import FirstScreen from "../screens/FirstScreen";
+import ThirdScreen from "../screens/ThirdScreen";
+import SecondScreen from "../screens/SecondScreen";
 
 const Stack = createStackNavigator();
 
 const AuthNavigator = () => (
   <Stack.Navigator>
     <Stack.Screen
-      name="Welcome"
-      component={HomeScreen}
+      name="First"
+      component={FirstScreen}
+      options={{ headerShown: false }}
+    />
+     <Stack.Screen
+      name="Second"
+      component={SecondScreen}
+      options={{ headerShown: false }}
+    />
+    <Stack.Screen
+      name="Third"
+      component={ThirdScreen}
       options={{ headerShown: false }}
     />
     <Stack.Screen

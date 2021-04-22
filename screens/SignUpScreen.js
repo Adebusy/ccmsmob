@@ -65,9 +65,7 @@ function SignUpScreen() {
     }
     resetForm();
     alert(
-      "Porfile created and Account opened sucessfully!!!. Your account number is " +
-        result.data
-    );
+      `Your newly created account number is ${result.data} Porfile created and Account opened sucessfully!!!. Your account number is` );
   };
 
   const { data: titles, error, loading, request: getTitles } = useAPI(
@@ -84,8 +82,7 @@ function SignUpScreen() {
       <AppForm
         initialValues={{
           title: "",
-          firstName: "",
-          lastName: "",
+          fullName: "",
           dateOfBirth: "",
           street: "",
           homeNumber: "",
@@ -106,12 +103,11 @@ function SignUpScreen() {
         />
         <AppFormField
           maxLength={30}
-          name="firstName"
-          placeholder="First Name"
+          name="fullName"
+          placeholder="Fullname"
           autoCorrect={false}
         />
 
-        <AppFormField maxLength={30} name="lastName" placeholder="Last Name" />
         <AppFormField
           maxLength={10}
           name="dateOfBirth"
