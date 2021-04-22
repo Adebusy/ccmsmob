@@ -10,6 +10,8 @@ const getAllUsers = () => client.get(userslistEndpoint);
 
 const loginUsers = () => client.get(loginEndPoints);
 
+const login =(email, password) =>client.post(userLogin, {email, password});
+
 const loginUser = (loginDetail, onUploadProgress) => {
   var loginEndPoint =
     userLogin +
@@ -70,4 +72,5 @@ export default {
   getAllUsers,
   loginUser,
   loginUsers,
+  login
 };

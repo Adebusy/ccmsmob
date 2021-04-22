@@ -2,8 +2,9 @@ import React from "react";
 import Screen from "../components/Screen";
 import { Image, StyleSheet } from "react-native";
 import * as Yup from "yup";
-import { AppFormField, SubmitButton, AppForm } from "../components/forms";
+import { AppFormField, ErrorMessage, SubmitButton, AppForm } from "../components/forms";
 import users from "../api/users";
+import AuthStorage from "../auth/storage";
 import { useState } from "react";
 
 import AppNavigator from "../navigation/AppNavigator";
@@ -11,6 +12,8 @@ import NewComplainNavigator from "../navigation/NewComplainNavigator";
 import NavigationTheme from "../navigation/navigationTheme";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import AccountNavigator from "../navigation/AccountNavigator";
+import { useContext } from "react/cjs/react.production.min";
+import AuthContext from "../auth/context";
 
 const validateRequestBody = Yup.object().shape({
   email: Yup.string().required().email().label("Email"),
@@ -18,12 +21,23 @@ const validateRequestBody = Yup.object().shape({
 });
 
 function LoginScreen() {
+ const authContext = useContext(AuthContext);
   const navigation = useNavigation();
   const [uploadVisible, setUploadVisible] = useState(false);
   const [progress, setProgress] = useState(0);
 
+  const [loginFailed, setLoginFailed] = useState(falss);
+
   const handleSubmit = async (loginDetail, { resetForm }) => {
     navigation.navigate("AppNavigator");
+
+    ////
+  const result  = await users.login({email, password})
+  if(!result.ok) return setLoginFailed(true);
+  setLoginFailed(false);
+  authContext.setUser(result.data);
+  AuthStorage.storeToken(result.data);
+    ////
 
     //var response = await users.loginUsers(loginDetail);
     //setProgress(0);
@@ -53,6 +67,7 @@ function LoginScreen() {
         onSubmit={handleSubmit}
         validationSchema={validateRequestBody}
       >
+       <ErrorMessage error ="invalid username and/or password" visible ={loginFailed}/>
         <AppFormField
           name="email"
           style={styles.textInput}

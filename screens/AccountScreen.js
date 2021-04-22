@@ -7,6 +7,8 @@ import Screen from "../components/Screen";
 import colors from "../config/colors";
 import Icon from "../components/Icon";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { useContext } from "react/cjs/react.production.min";
+import AuthContext from "../auth/context";
 const retObject = [
   {
     title: "Complains",
@@ -27,12 +29,13 @@ const retObject = [
 ];
 
 function AccountScreen({ navigation }) {
+  const { user, setUser } = useContext(AuthContext);
   return (
     <Screen style={styles.screen}>
       <View style={styles.container}>
         <ListItems
-          title={AppConfig.Author}
-          subTitle={AppConfig.Role}
+          title={user.fullname}
+          subTitle={user.emailAddress}
           image={require("../assets/AlaoRamonPass.jpeg")}
         />
       </View>
@@ -59,7 +62,7 @@ function AccountScreen({ navigation }) {
       <ListItems
         title={"Log Out"}
         IconName={"logout"}
-        ImageComponent={<Icon name={"logout"} backgroundColor={"#ffe66d"} />}
+        ImageComponent={<Icon name={"logout"} backgroundColor={"#ffe66d"} onPress={() =>setUser(null)} />}
       ></ListItems>
     </Screen>
   );

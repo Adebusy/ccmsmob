@@ -10,6 +10,9 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import AuthNavigator from "./navigation/AuthNavigator";
 import AppNavigator from "./navigation/AppNavigator";
 import NavigationTheme from "./navigation/navigationTheme";
+import OfflineNotice from "./components/OfflineNotice";
+import AuthContext from "./auth/context";
+import { useState } from "react/cjs/react.development";
 
 const Stack = createStackNavigator();
 const StackNavigator = () => (
@@ -81,11 +84,14 @@ const TabNavigator = () => (
 );
 
 function App() {
+  const[user, setUser]  = useState();
   return (
+    <AuthContext.Provider value={{user, setUser}}>
+    <OfflineNotice/>
     <NavigationContainer theme={NavigationTheme}>
-      <AuthNavigator />
-      {/* <TabNavigator /> */}
+      {user ? <AppNavigator/> :<AuthNavigator />}
     </NavigationContainer>
+    </AuthContext.Provider>
     // <Screen>
     //   <Homescreen
     //     title={AppConfig.Title}
