@@ -22,7 +22,7 @@ const AccountNavigator = () => (
       options={{ headerShown: false }}
     />
     <Stack.Screen
-      name="ListingComplainDetailScreen"
+      name="ListingComplainDetail"
       component={ListingComplainDetailScreen}
       options={{ headerShown: false }}
     />

@@ -2,7 +2,7 @@ import { create } from "apisauce";
 import cache from "../utility/cache";
 
 const apiClient = create({
-  baseURL: "http://192.168.157.87:3001/api",
+  baseURL: "http://localhost:3001/api/",
 });
 
  const get  = apiClient.get;
@@ -17,9 +17,5 @@ const apiClient = create({
  const data  = await cache.get(url);
  return data ? {ok: true, data} : response;
 }
-// apiClient.get("user/login").then((response) => {
-//   if (!response.ok) {
-//     response.problem;
-//   }
-// });
+
 export default apiClient;

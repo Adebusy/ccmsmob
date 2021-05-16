@@ -1,10 +1,10 @@
 import React from "react";
-import { View, StyleSheet, Image } from "react-native";
+import { View, StyleSheet, Image } from "react-native"; //import { View, StyleSheet, Image } from "react-native";
 import colors from "../config/colors";
 import AppText from "./AppText";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 //to make use of cache image import the below
-import {Image} from "react-native-expo-image-cache";
+//import {Image} from "react-native-expo-image-cache";
 
 function Card({ title, subTitle, image, onPress }) {
   return (
@@ -27,10 +27,11 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     margin: 20,
     overflow: "hidden",
+    marginBottom: 20,
   },
   image: {
     width: "100%",
-    height: 200,
+    height: 300,
   },
   detailsContainer: {
     padding: 20,

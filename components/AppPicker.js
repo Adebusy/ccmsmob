@@ -6,7 +6,6 @@ import defaultStyles from "../config/styles";
 import AppText from "./AppText";
 import Screen from "../components/Screen";
 import PickerItem from "./PickerItem";
-import colors from "../config/colors";
 
 function AppPicker({
   icon,

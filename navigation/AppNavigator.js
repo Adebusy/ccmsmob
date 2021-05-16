@@ -1,21 +1,23 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import React from "react";
+import React  from "react";
 import NewComplainScreen from "../screens/NewComplainScreen";
 import FeedNavigator from "./FeedNavigator";
 import AccountNavigator from "../navigation/AccountNavigator";
 import NewComplainNavigator from "../navigation/NewComplainNavigator";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import NewListingButton from "./NewListingButton";
+
 const Tab = createBottomTabNavigator();
-const Mycolor = "red";
+const MyColor = "red";
+
 const AppNavigator = () => (
   <Tab.Navigator>
     <Tab.Screen
       name="Feed"
       component={FeedNavigator}
       options={{
-        tabBarIcon: (Mycolor, size) => (
-          <MaterialCommunityIcons name="home" color={Mycolor} size={size} />
+        tabBarIcon: (MyColor, size) => (
+          <MaterialCommunityIcons name="home" color={MyColor} size={size} />
         ),
       }}
     />
@@ -28,10 +30,10 @@ const AppNavigator = () => (
             onPress={() => navigation.navigate(NewComplainNavigator)}
           />
         ),
-        tabBarIcon: (Mycolor, size) => (
+        tabBarIcon: (MyColor, size) => (
           <MaterialCommunityIcons
             name="plus-circle"
-            color={Mycolor}
+            color={MyColor}
             size={size}
           />
         ),
@@ -39,10 +41,10 @@ const AppNavigator = () => (
     />
     <Tab.Screen
       name="Account"
-      component={AccountNavigator}
+      component={AccountNavigator} initialParams={{mail:"test@gmail.com", title:"alao Ramon"}}
       options={{
-        tabBarIcon: (Mycolor, size) => (
-          <MaterialCommunityIcons name="account" color={Mycolor} size={size} />
+        tabBarIcon: (MyColor, size) => (
+          <MaterialCommunityIcons name="account" color={MyColor} size={size} />
         ),
       }}
     />

@@ -1,11 +1,8 @@
 import React from "react";
-import { View, Alert, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import Card from "../components/Card";
 import AppButton from "../components/AppButton";
 import colors from "../config/colors";
-import AccountScreen from "../screens/AccountScreen";
-import LoginScreen from "../screens/LoginScreen";
-//function Homescreen({ title, subTitle }) {
 function Homescreen({ navigation }) {
   const recObject = {
     title: "CCMS",

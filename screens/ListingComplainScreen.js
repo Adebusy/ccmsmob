@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FlatList, StyleSheet, Button } from "react-native";
+import { FlatList, StyleSheet } from "react-native";
 import ListItems from "../components/ListItems";
 import Screen from "../components/Screen";
 import ListItemSeparator from "../components/ListItemSeparator";
@@ -21,10 +21,6 @@ function ListingComplainScreen({ navigation }) {
     getComplaint();
   }, []);
 
-  //const handDelete = (message) => {
-  //setMessages(messages.filter((m) => m.id !== message.id));
-  //};
-
   return (
     <Screen>
       {error && (
@@ -35,6 +31,8 @@ function ListingComplainScreen({ navigation }) {
       )}
       <ActivityIndicator visible={loading} />
       {
+        <>
+        <AppText style={styles.title}>{"Complain List"}</AppText>
         <FlatList
           data={complaints}
           keyExtractor={(complaint) => toString(complaint.id)}
@@ -44,14 +42,14 @@ function ListingComplainScreen({ navigation }) {
               subTitle={item.complaintSubCategory}
               image={item.image}
               onPress={() =>
-                navigation.navigate("ListingComplainDetailScreen", item)
+                navigation.navigate("ListingComplainDetailScreen",{complainCategory: item.complaintCategory, complaintSubCat: item.complaintSubCategory, complaintdescription: item.complaintDescription, totalAmount: item.disputeAmount, amountRecovered: item.amountRefunded, complaintSubject: item.complaintSubject, status: item.status, remark: item.remark})
               }
               renderRightActions={() => (
                 <ListItemDeleteAction
                   onPress={() =>
-                    navigation.navigate("ListingComplainDetailScreen", item)
+                    navigation.navigate("ListingComplainDetailScreen", {complainCategory: item.complaintCategory, complaintSubCat: item.complaintSubCategory, complaintdescription: item.complaintDescription, totalAmount: item.disputeAmount, amountRecovered: item.amountRefunded, complaintSubject: item.complaintSubject, status: item.status, remark: item.remark})
                   }
-                /> //<ListItemDeleteAction onPress={() => handDelete(item)} /> (to call method upon button click)
+                />
               )}
             />
           )}
@@ -63,14 +61,21 @@ function ListingComplainScreen({ navigation }) {
                 id: 3,
                 title: "test3",
                 subTitle: "testsub3",
-                image: require("../assets/pizza.jpeg"),
+                image: require("../assets/complaint.png"),
               },
             ]);
           }}
         />
+        </>
       }
     </Screen>
   );
 }
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  title: {
+    fontSize: 18,
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+});
 export default ListingComplainScreen;

@@ -1,9 +1,7 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
-import HomeScreen from "../screens/Homescreen";
 import LoginNavigator from "./LoginNavigator";
 import SignUpNavigator from "./SignUpNavigator";
-import AccountNavigator from "../navigation/AccountNavigator";
 import AppNavigator from "../navigation/AppNavigator";
 import FirstScreen from "../screens/FirstScreen";
 import ThirdScreen from "../screens/ThirdScreen";

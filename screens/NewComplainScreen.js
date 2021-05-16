@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import * as Yup from "yup";
-import { StyleSheet, ScrollView } from "react-native";
+import { StyleSheet, ScrollView, Alert } from "react-native";
 import AppFormField from "../components/forms/AppFormField";
 import SubmitButton from "../components/forms/SubmitButton";
 import AppForm from "../components/forms/AppForm";
@@ -9,8 +9,8 @@ import Screen from "../components/Screen";
 import AppText from "../components/AppText";
 import useLocation from "../hooks/useLocation";
 import complaintAPI from "../api/complaint";
-import UploadScreen from "./UploadScreen";
-import { useState } from "react";
+import {useContext} from "react";
+import AuthContext from "../auth/context";
 
 const validationSchema = Yup.object().shape({
   complaintdescription: Yup.string().required().label("complaintdescription"),
@@ -32,49 +32,47 @@ const validationSchema = Yup.object().shape({
 
 const complainCategory = [
   { label: "ATM", value: "ATM" },
-  { label: "Clothing", value: "Clothing" },
-  { label: "Camera", value: "Camera" },
+  { label: "POS", value: "POS" },
+  { label: "CARDLESS", value: "CARDLESS" },
 ];
 
 const complainSubCategory = [
-  { label: "Furniture", value: "Furniture" },
-  { label: "Clothing", value: "Clothing" },
+  { label: "Dispense Error", value: "Dispense Error" },
+  { label: "Unabl", value: "Clothing" },
   { label: "Camera", value: "Camera" },
 ];
 
-function NewComplainScreen() {
+function NewComplainScreen({navigation}) {
+  const authContext = useContext(AuthContext);
   const mylocation = useLocation();
-  const [uploadVisible, setUploadVisible] = useState(false);
-  const [progress, setProgress] = useState(0);
-
-  const handleSubmit = async (complaint, { resetForm }) => {
-    setProgress(0);
-    setUploadVisible(true);
-    const result = await complaintAPI.addComplain(
-      { ...complaint, mylocation },
-      (progress) => setProgress(progress)
-    );
-
+  const handleSubmit = async ({complaintdescription, totalAmount, amountRecovered, transactionDate, complainCategory, complaintSubCat, complaintSubject, prayer}, {resetForm}) => {
+    console.log(mylocation);
+    const result = await complaintAPI.addComplain({complaintdescription, totalAmount, amountRecovered, transactionDate, complainCategory, complaintSubCat, complaintSubject, prayer, mylocation});
     if (!result.ok) {
-      setUploadVisible(false);
       return alert(
         "Uable to submit request at the moment. Please try again later!!" +
           console.log("wahala wa ooo 0 " + result.data)
       );
     }
     resetForm();
-    alert("success");
+    Alert.alert(
+      'success!!!',
+      `${result.data}`,
+      [
+        {
+          text: 'Ok',
+          onPress: () => navigation.navigate("ListingComplainDetail",{complaintdescription: complaintdescription, totalAmount: totalAmount, amountRecovered: amountRecovered, transactionDate: transactionDate, complainCategory: complainCategory, complaintSubCat: complaintSubCat, complaintSubject: complaintSubject, prayer: prayer,complaintType:"fddfdf"})
+        }
+      ],
+      {cancelable: false},
+    );
   };
 
   return (
     <Screen style={styles.container}>
       <ScrollView style={styles.scrollView}>
         <AppText style={styles.title}>{"Complain Form"}</AppText>
-        <UploadScreen
-          onDone={() => setUploadVisible(false)}
-          progress={progress}
-          visible={uploadVisible}
-        />
+        
         <AppForm
           initialValues={{
             complaintdescription: "",
@@ -141,7 +139,7 @@ function NewComplainScreen() {
             numberOfLines={3}
             placeholder="Prayer(What do you want us to do?)"
           />
-          <SubmitButton name="POST" style={styles.submitButton} />
+          <SubmitButton name="Log Complain" style={styles.submitButton} />
         </AppForm>
       </ScrollView>
     </Screen>

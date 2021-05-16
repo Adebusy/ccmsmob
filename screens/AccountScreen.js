@@ -1,16 +1,13 @@
-import React, {useState} from "react";
+import React ,{useContext, useEffect, useState} from "react";
 import { StyleSheet, View, FlatList } from "react-native";
 import ListItems from "../components/ListItems";
 import ListItemSeparator from "../components/ListItemSeparator";
-import AppConfig from "../config/AppConfig";
 import Screen from "../components/Screen";
 import colors from "../config/colors";
 import Icon from "../components/Icon";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
-import { useContext } from "react/cjs/react.production.min";
 import AuthContext from "../auth/context";
 import  storage from "../auth/storage";
-
+import InfoText from "../components/label";
 
 const retObject = [
   {
@@ -31,24 +28,29 @@ const retObject = [
   },
 ];
 
-function AccountScreen({ navigation }) {
-  const { user, setUser } = useContext(AuthContext);
- 
+function AccountScreen({ navigation, route }) {
+  const [mail, setMail] = useState("");
+  const [title, setTitle] = useState("");
+  const { setUser } = useContext(AuthContext);
   const handleLogOut =() =>{
     () =>setUser(null);
     storage.removeToken();
   }
-
+  useEffect(() => {
+    setMail("alao.adebusy@gmail.com");
+    setTitle("alao Ramon");
+  }, []);
 
   return (
     <Screen style={styles.screen}>
       <View style={styles.container}>
         <ListItems
-          title={user.fullname}
-          subTitle={user.emailAddress}
+          title={"mail"}
+          subTitle={"title"}
           image={require("../assets/AlaoRamonPass.jpeg")}
         />
       </View>
+      <InfoText text="Account" />
       <View style={styles.container}>
         <FlatList
           data={retObject}
@@ -72,8 +74,8 @@ function AccountScreen({ navigation }) {
       <ListItems
         title={"Log Out"}
         IconName={"logout"}
-        ImageComponent={<Icon name={"logout"} backgroundColor={"#ffe66d"} onPress={() =>setUser(null)} onPress ={handleLogOut} />}
-      ></ListItems>
+        ImageComponent={<Icon name={"logout"} backgroundColor={"#ffe66d"} onPress ={handleLogOut}/>}
+      />
     </Screen>
   );
 }

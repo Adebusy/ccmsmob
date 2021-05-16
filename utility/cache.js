@@ -1,10 +1,8 @@
-//import {AsyncStorage} from "react-native";
-import {AsyncStorage} from "@react-native-community/async-storage"
-import { Date } from "yup/lib/locale";
+import AsyncStorage from "@react-native-community/async-storage"
 import moment from "moment";
 
 const prefix = "cache";
-const expiryInMinutes = 5;
+const expiryInMinutes = 1;
 
 const store = async (key,value) =>{
  try{
@@ -40,8 +38,6 @@ const get  = async (key) =>{
     }catch(error){
     console.log(error)
     }
-
-    
 }
 export default {
 store,

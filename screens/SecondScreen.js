@@ -1,9 +1,10 @@
 import React from "react";
-import { View, Alert, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import Card from "../components/Card";
 import AppButton from "../components/AppButton";
 import colors from "../config/colors";
 import AppText from "../components/AppText";
+import Screen from "../components/Screen";
 function SecondScreen({ navigation }) {
   const recObject = {
     title: "CCMS",
@@ -11,14 +12,14 @@ function SecondScreen({ navigation }) {
   };
 
   return (
+    <Screen style={styles.container}>
     <View style={styles.homescreencss}>
-        <View style={styles.topsmodule}><AppText>{"Pleasant Bank"}</AppText>
-        <AppText>{"Customer Complaint Management System"}</AppText>
+        <View><AppText style={styles.title}>{"Pleasant Bank"}</AppText>
     </View>
         
       <Card
         title="CCMS"
-        subTitle="Customer Complain Management System"
+        subTitle="Complain Management System"
         image={require("../assets/complaint.png")}
       />
        <View style={styles.buttonsContainer}>
@@ -32,10 +33,17 @@ function SecondScreen({ navigation }) {
       </View>
     </View>
     </View>
+    </Screen>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
   homescreencss: {
     backgroundColor: colors.white,
     padding: 20,
@@ -59,6 +67,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
   },
+  screen: { backgroundColor: colors.light },
 });
 
 export default SecondScreen;

@@ -1,6 +1,5 @@
 import React from "react";
-import * as Yup from "yup";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Alert ,TouchableOpacity} from "react-native";
 import AppFormField from "../components/forms/AppFormField";
 import SubmitButton from "../components/forms/SubmitButton";
 import AppForm from "../components/forms/AppForm";
@@ -8,22 +7,8 @@ import AppFormPicker from "../components/forms/AppFormPicker";
 import Screen from "../components/Screen";
 import AppText from "../components/AppText";
 import users from "../api/users";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import complaintAPI from "../api/complaint";
-
-const validationSchema = Yup.object().shape({
-  title: Yup.object().required().nullable().label("title"),
-  firstName: Yup.string().required().min(1).max(30).label("firstName"),
-  lastName: Yup.string().required().min(1).max(30).label("lastName"),
-  dateOfBirth: Yup.string().required().max(10).label("dateOfBirth"),
-  street: Yup.string().required().min(1).max(30).label("street"),
-  homeNumber: Yup.string().required().min(1).max(10).label("homeNumber"),
-  city: Yup.number().required().min(1).max(30).label("city"),
-  postalCode: Yup.string().min(1).max(10).label("postalCode"),
-  email: Yup.string().min(1).max(50).label("email"),
-  phone: Yup.number().required().label("phone"),
-  password: Yup.string().min(1).max(50).label("password"),
-});
 
 const titleObj = [
   { label: "Mr", value: 1 },
@@ -31,50 +16,40 @@ const titleObj = [
   { label: "Miss", value: 3 },
 ];
 
-function SignUpScreen() {
-  const [uploadVisible, setUploadVisible] = useState(false);
-  const [progress, setProgress] = useState(0);
-  // const [titleObj, settitleObj] = useState([]);
-
-  // useEffect(() => {
-  //   loadTitle();
-  // });
-
-  // const loadTitle = async () => {
-  //   console.log("got here ");
-  //   const retTitle = await complaintAPI.getTitles();
-  //   if (retTitle.ok) {
-  //     console.log("got ok ");
-  //     console.log(retTitle.data);
-  //     settitleObj(retTitle.data);
-  //   } else {
-  //     console.log("erer" + retTitle.problem);
-  //   }
-  // };
-
-  const handleSubmit = async (newUser) => {
-    setProgress(0);
-    setUploadVisible(true);
-    console.log("heere 1");
-    const result = await users.addNewUser(newUser);
+function SignUpScreen({ navigation }) {
+  const handleSubmit = async ({dateOfBirth, email, fullName, password, phone, postalCode, title, homeNumber, street}, {resetForm}) => {
+    let homeAddress = homeNumber + " " + street;
+    let titleRec = title.label;
+    console.log(homeAddress);
+   const result = await users.addNewUser(dateOfBirth, email, fullName, homeAddress, password, phone, postalCode, titleRec);
     if (!result.ok) {
-      setUploadVisible(false);
+      console.log(result.error)
       return alert(
         "Unable to create new user at the moment. Please try again later!!!"
       );
     }
+    console.log("handleSubmit2");
     resetForm();
-    alert(
-      `Your newly created account number is ${result.data} Porfile created and Account opened sucessfully!!!. Your account number is` );
+    Alert.alert(
+         'success!!!',
+         `Succcess!!! Profile and Account opened sucessfully!!!. Your account number is ${result.data.AccountNo}`,
+         [
+           {
+             text: 'Ok',
+             onPress: () => navigation.navigate("Login")
+           }
+         ],
+         {cancelable: false},
+       );
   };
 
-  const { data: titles, error, loading, request: getTitles } = useAPI(
-    complaintAPI.getTitles
-  );
+   const { data: titles, error, loading, request: getTitles } = useAPI(
+     complaintAPI.getTitles
+   );
 
-  useEffect(() => {
-    getTitles();
-  }, []);
+   useEffect(() => {
+     getTitles();
+   }, []);
 
   return (
     <Screen style={styles.container}>
@@ -93,7 +68,6 @@ function SignUpScreen() {
           password: "",
         }}
         onSubmit={handleSubmit}
-        validationSchema={validationSchema}
       >
         <AppFormPicker
           items={titleObj}
@@ -116,28 +90,30 @@ function SignUpScreen() {
         />
 
         <View style={styles.address}>
+          <View>
+          <AppFormField
+            maxLength={3}
+            name="homeNumber"
+            placeholder="House No."
+            keyboardType="numeric"
+            autoCorrect={false}
+          />
+          </View>
           <AppFormField
             maxLength={50}
             name="street"
             placeholder="Street name"
             autoCorrect={false}
           />
-          <AppFormField
-            maxLength={3}
-            name="homeNumber"
-            placeholder="House number"
-            keyboardType="numeric"
-            autoCorrect={false}
-          />
         </View>
         <View style={styles.address}>
-          <AppFormField maxLength={30} name="city" placeholder="City" />
-          <AppFormField
+        <View><AppFormField
             maxLength={8}
             name="postalCode"
             placeholder="Postal code"
             autoCorrect={false}
-          />
+          /></View>
+          <AppFormField maxLength={30} name="city" placeholder="City" />        
         </View>
 
         <AppFormField
@@ -149,7 +125,7 @@ function SignUpScreen() {
           autoCapitalized="none"
         />
         <AppFormField
-          maxLength={10}
+          maxLength={11}
           name="phone"
           placeholder="Phone number "
           keyboardType="numeric"
@@ -162,8 +138,11 @@ function SignUpScreen() {
           secureTextEntry
           autoCapitalized="none"
         />
-        <SubmitButton name="Submit" style={styles.submitButton} />
+        <SubmitButton name="Login" />
       </AppForm>
+      <TouchableOpacity>
+          <Text style={styles.forgot_button} onPress={() => navigation.navigate("Third")} margin ={"20"}>Back</Text>
+      </TouchableOpacity>
     </Screen>
   );
 }
@@ -173,6 +152,7 @@ const styles = StyleSheet.create({
     padding: 50,
     width: "50%",
   },
+
   title: {
     fontSize: 18,
     fontWeight: "bold",

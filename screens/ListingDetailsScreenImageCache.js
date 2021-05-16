@@ -5,17 +5,17 @@ import AppConfig from "../config/styles";
 import colors from "../config/colors";
 import ListItems from "../components/ListItems";
 import Screen from "../components/Screen";
-import 
+
 
 function ListingDetailsScreenImageCache({ route }) {
-  const listings = route.params; //source={require("../assets/pizza.jpeg")}
+  const listings = route.params;
   return (
     <Screen>
       <View>
         <Image
           style={styles.image}
-          source={require("../assets/pizza.jpeg")}
-        ></Image>
+          source={require("../assets/complaint.png")}
+        />
         <View>
           <AppText style={styles.title}>{listings.title}</AppText>
           <AppText style={styles.subTitle}>${listings.subTitle}</AppText>
